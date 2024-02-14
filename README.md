@@ -21,3 +21,6 @@ sudo bash -c "$(curl -sL https://get.containerlab.dev)"
 
 # Install gnmic client
 bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
+
+# Start the LAB
+sudo clab deploy -t demo.yml
