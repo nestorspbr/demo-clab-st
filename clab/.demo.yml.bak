@@ -1,0 +1,53 @@
+name: demo
+prefix: ""
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux
+  nodes:
+    spine1:
+      kind: nokia_srlinux
+    spine2:
+      kind: nokia_srlinux
+    leaf1:
+      kind: nokia_srlinux
+    leaf2:
+      kind: nokia_srlinux
+    leaf3:
+      kind: nokia_srlinux
+    leaf4:
+      kind: nokia_srlinux
+    # Stream Telemetry tools    
+    gnmic:
+      kind: linux
+      image: ghcr.io/openconfig/gnmic:latest
+      binds:
+        - gnmic-prom.yml:/gnmic-prom.yml:ro
+      cmd: --config /gnmic-prom.yml --log subscribe
+    prometheus:
+      kind: linux
+      image: prom/prometheus:latest
+      ports:
+        - 9090:9090
+      binds:
+        - prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      cmd: --config.file=/etc/prometheus/prometheus.yml
+    grafana:
+      kind: linux
+      image: grafana/grafana:latest
+      binds:
+        - datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+        - dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
+        - dashboards:/var/lib/grafana/dashboards
+      ports:
+        - 3000:3000
+
+  links:
+    - endpoints: ["leaf1:e1-1", "spine1:e1-11"]
+    - endpoints: ["leaf1:e1-2", "spine2:e1-11"]
+    - endpoints: ["leaf2:e1-1", "spine1:e1-12"]
+    - endpoints: ["leaf2:e1-2", "spine2:e1-12"]
+    - endpoints: ["leaf3:e1-1", "spine1:e1-13"]
+    - endpoints: ["leaf3:e1-2", "spine2:e1-13"]
+    - endpoints: ["leaf4:e1-1", "spine1:e1-14"]
+    - endpoints: ["leaf4:e1-2", "spine2:e1-14"]

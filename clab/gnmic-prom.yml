@@ -1,0 +1,111 @@
+username: admin
+password: NokiaSrl1!
+skip-verify: true
+port: 57400
+timeout: 10s
+encoding: json_ietf
+log: true
+
+targets:
+  leaf1:57400:
+    subscriptions:
+      - srl_if_oper_state
+      - srl_if_stats
+      - srl_if_traffic_rate
+      - srl_cpu
+      - srl_mem
+      - srl_bgp_stats
+  leaf2:57400:
+    subscriptions:
+      - srl_if_oper_state
+      - srl_if_stats
+      - srl_if_traffic_rate
+      - srl_cpu
+      - srl_mem
+      - srl_bgp_stats    
+  leaf3:57400:
+    subscriptions:
+      - srl_if_oper_state
+      - srl_if_stats
+      - srl_if_traffic_rate
+      - srl_cpu
+      - srl_mem
+      - srl_bgp_stats      
+  leaf4:57400:
+    subscriptions:
+      - srl_if_oper_state
+      - srl_if_stats
+      - srl_if_traffic_rate
+      - srl_cpu
+      - srl_mem
+      - srl_bgp_stats      
+  spine1:57400:
+    subscriptions:
+      - srl_if_oper_state
+      - srl_if_stats
+      - srl_if_traffic_rate
+      - srl_cpu
+      - srl_mem
+      - srl_bgp_stats      
+  spine2:57400:
+    subscriptions:
+      - srl_if_oper_state
+      - srl_if_stats
+      - srl_if_traffic_rate
+      - srl_cpu
+      - srl_mem
+      - srl_bgp_stats      
+
+subscriptions:
+  srl_if_oper_state:
+    paths:
+      - /interface[name=ethernet-1/*]/oper-state
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_if_stats:
+    paths:
+      - /interface[name=ethernet-1/*]/statistics
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+  
+  srl_if_traffic_rate:
+    paths:
+      - /interface[name=ethernet-1/*]/traffic-rate
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_cpu:
+    paths:
+      - /platform/control[slot=*]/cpu[index=all]/total
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_mem:
+    paths:
+      - /platform/control[slot=*]/memory
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_bgp_stats:
+    paths:
+      - /network-instance[name=*]/protocols/bgp/statistics
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+
+outputs:
+  prom:
+    type: prometheus
+    listen: :9273
+    path: /metrics
+    metric-prefix: gnmic
+    append-subscription-name: true
+    export-timestamps: true
+    debug: false  

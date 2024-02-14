@@ -1,0 +1,38 @@
+updates:
+{{- $target := index .Vars .TargetName -}}
+{{- range $interface := $target.interfaces }}
+  {{- range $idx, $subinterface := $interface.subinterface }}
+  - path: "/interface[name={{ $interface.name }}]/subinterface[index={{ $subinterface.index }}]"
+    encoding: "json_ietf"
+    value: 
+      admin-state: {{ $subinterface.admin_state | default "disable" }}
+      {{- if $subinterface.type }}
+      type: {{ $subinterface.type | default "" }}
+      {{- end }}
+      {{- if $subinterface.description }}
+      description: {{ $subinterface.description | default "" }}
+      {{- end }}
+      {{- if $subinterface.ipv4_address }}
+      ipv4:
+        admin-state: enable
+        address:
+          - ip-prefix: {{ $subinterface.ipv4_address }}
+      {{- end }}
+      {{- if $subinterface.ipv6_address }}
+      ipv6:
+        address:
+          - ip-prefix: {{ $subinterface.ipv6_address }}
+      {{- end }}
+      {{- if $subinterface.vlan_id }}
+      vlan:
+        encap:
+          single-tagged:
+            vlan-id: {{ $subinterface.vlan_id }}
+      {{- else if $subinterface.untagged }}
+      vlan:
+        encap:
+          untagged: {}
+      {{- end }}
+    {{- end }}
+{{- end }}
+

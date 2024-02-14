@@ -1,0 +1,12 @@
+routing_policy:
+  prefix_set:
+    - name: loopbacks
+      prefix: 100.0.0.0/8
+      mask_length_range: 8..32
+  policy:
+    - name: "export-loopbacks"
+      statement:
+      - sequence_id: 1
+        match:
+          prefix_set: loopbacks
+

@@ -1,0 +1,12 @@
+updates:
+{{- $target := index .Vars .TargetName -}}
+{{- range $interface := $target.interfaces }}
+  - path: "/interface[name={{ $interface.name }}]"
+    encoding: "json_ietf"
+    value: 
+      admin-state: {{ $interface.admin_state | default "disable" }}
+      description: {{ $interface.description | default "" }}
+      {{- if $interface.vlan_tagging }}
+      vlan-tagging: {{ $interface.vlan_tagging }}
+      {{- end }}
+{{- end }}
