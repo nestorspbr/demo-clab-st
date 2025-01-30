@@ -5,6 +5,7 @@ LAB tested with 4vCPU and 16 GB vRAM.
 
 Requirements:
 
+```
 # Install Docker
 sudo yum install docker -y
 
@@ -15,12 +16,16 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 
 sudo systemctl status docker.service
+```
 
 # Install Containerlab
-sudo bash -c "$(curl -sL https://get.containerlab.dev)"
+
+`sudo bash -c "$(curl -sL https://get.containerlab.dev)"`
 
 # Install gnmic client
-bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
+
+`bash -c "$(curl -sL https://get-gnmic.openconfig.net)"`
 
 # Start the LAB
-sudo clab deploy -t demo.yml
+
+`sudo clab deploy -t demo.yml`
