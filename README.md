@@ -20,7 +20,9 @@ sudo systemctl status docker.service
 
 ## Install Containerlab
 
-```sudo bash -c "$(curl -sL https://get.containerlab.dev)"```
+```
+sudo bash -c "$(curl -sL https://get.containerlab.dev)"
+```
 
 ## Install gnmic client
 
